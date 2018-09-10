@@ -11,13 +11,17 @@ import {
 
 import { Actions } from 'react-native-router-flux';
 
-const fakeCity = [{ name: 'Ha noi' }, { name: 'Da nang' }, { name: 'Tp.HCM' }];
+import { getListCityAutoComplete } from '~/domain/actions/addCity/index';
 
 const mapStateToProps = (state) => {
   console.log(`AddCityActivity => state => ${JSON.stringify(state)}`);
-  return {};
+  return {
+    listCity: state.addCityReducer.data,
+  };
 };
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getListCityAutoComplete,
+};
 @connect(
   mapStateToProps,
   mapDispatchToProps,
@@ -27,8 +31,13 @@ export default class AddCityActivity extends Component {
     super(props);
     this.state = {
       text: '',
-      listCity: fakeCity,
     };
+  }
+
+  onQueryCity(text) {
+    if (text.length > 2) {
+      this.props.getListCityAutoComplete(text);
+    }
   }
 
   render() {
@@ -75,14 +84,14 @@ export default class AddCityActivity extends Component {
             borderWidth: 1,
           }}
           placeholder="Enter city name"
-          onChangeText={text => this.setState({ text })}
+          onChangeText={text => this.onQueryCity(text)}
           value={this.state.text}
         />
 
         <FlatList
           style={{ marginTop: 20 }}
           keyExtractor={item => item.name}
-          data={this.state.listCity}
+          data={this.props.listCity}
           renderItem={({ item }) => (
             <TouchableOpacity>
               <Text
@@ -94,8 +103,7 @@ export default class AddCityActivity extends Component {
                   fontSize: 22,
                 }}
               >
-                {' '}
-                {item.name}{' '}
+                {item.name}
               </Text>
             </TouchableOpacity>
           )}

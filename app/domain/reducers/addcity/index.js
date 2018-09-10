@@ -1,6 +1,6 @@
 import types from '~/domain/types/index';
 
-export const addCityReducer = (stateAddCity = {}, action) => {
+export const addCityReducer = (stateAddCity = initStateAddCity, action) => {
   console.log(`addCityReducer ==> ${action.type}`);
   switch (action.type) {
     case types.addCityTypes.GET_DATA_CITY:
@@ -17,3 +17,16 @@ export const addCityReducer = (stateAddCity = {}, action) => {
       return stateAddCity;
   }
 };
+
+const initStateAddCity = [
+  {
+    key: 'key',
+    name: ' item.LocalizedName',
+    type: 'item.Type',
+    rank: 'item.Rank',
+    country: {
+      id: 'item.Country.ID',
+      name: 'item.Country.LocalizedName',
+    },
+  },
+];
